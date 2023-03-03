@@ -31,7 +31,7 @@ require 'header.php'
             </div>
         </div>
 
-        <img src="src/resources/small-bg.png" class="fixed left-0 -bottom-2">
+        <img src="src/resources/small-bg.png" class="fixed left-0 -bottom-2" alt="background">
     </section>
 
     <section id="section2">

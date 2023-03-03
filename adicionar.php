@@ -1,7 +1,7 @@
 <?php
 require 'header.php';
 
-if(!isset($_SESSION['user'])){
+if (!isset($_SESSION['user'])) {
     header("Location: index.php");
 }
 
@@ -10,24 +10,24 @@ if(!isset($_SESSION['user'])){
 <div class="adicionarWrapper">
     <form action="adicionar-livro.php" method="post">
         <label for="livro-title">Título:</label>
-        <input type="text" class="" id="livro-title" name="livro-title" >
+        <input type="text" class="" id="livro-title" name="livro-title">
         <?php
         if (isset($_SESSION['error']['title-empty'])) {
-                echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['title-empty'] . '</p>';
+            echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['title-empty'] . '</p>';
         }
-        if(isset($_SESSION['error']['livro-already-take'])) {
-                echo '<p class="alert alert-danger mt-1">'. $_SESSION['error']['livro-already-take']. '</p>';
+        if (isset($_SESSION['error']['livro-already-take'])) {
+            echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['livro-already-take'] . '</p>';
         }
-        if(isset($_SESSION['sucess']['adicionar'])) {
-                echo '<p class="alert alert-success mt-1">'. $_SESSION['sucess']['adicionar']. '</p>';
+        if (isset($_SESSION['sucess']['adicionar'])) {
+            echo '<p class="alert alert-success mt-1">' . $_SESSION['sucess']['adicionar'] . '</p>';
         }
         ?>
 
         <label for="livro-description">Descrição:</label>
-        <textarea name="livro-description" id="livro-description" ></textarea>
+        <textarea name="livro-description" id="livro-description"></textarea>
         <?php
         if (isset($_SESSION['error']['description-empty'])) {
-            if(empty($descricao)){
+            if (empty($descricao)) {
                 echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['description-empty'] . '</p>';
             }
         }
@@ -43,14 +43,14 @@ if(!isset($_SESSION['user'])){
 
             foreach ($categorias as $categoria) {
                 echo '<div class="wrapper">';
-                echo '<label for="'.$categoria['categoria_name'].'">'.$categoria['categoria_name'].'</label>';
-                echo '<input type="checkbox" name="livro-categoria[]" id="'.$categoria['categoria_name'].'" value="'.$categoria['categoria_name'].'">';
-                echo'</div>';
+                echo '<label for="' . $categoria['categoria_name'] . '">' . $categoria['categoria_name'] . '</label>';
+                echo '<input type="checkbox" name="livro-categoria[]" id="' . $categoria['categoria_name'] . '" value="' . $categoria['categoria_name'] . '">';
+                echo '</div>';
             }
             ?>
         </div>
         <?php
-        if($_SESSION['user']['permission'] == 2){
+        if ($_SESSION['user']['permission'] == 2) {
             echo '<a href="gerenciar-categorias.php?categorias" class="underline hover:font-bold">Gerenciar categorias</a><br>';
         }
         if (isset($_SESSION['error']['category-empty'])) {
@@ -59,33 +59,55 @@ if(!isset($_SESSION['user'])){
         ?>
 
         <label for="autor">Autor:</label>
-        <select name="autor" id="autor" >
-            <option selected disabled hidden> Selecione um autor</option>
-            <option value="J.R.R Tolkien">J.R.R Tolkien</option>
-            <option value="Machado de assis">Machado de assis</option>
+        <select name="autor" id="autor">
+            <option selected disabled hidden> Selecione um autor
+                <?php
+                $queryAutores = "SELECT * FROM tab_autores ORDER BY autor_name";
+                $query = $pdo->prepare($queryAutores);
+                $query->execute();
+                $autores = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($autores as $autor) {
+                    echo '<option value="' . $autor['autor_name'] . '">' . $autor['autor_name'] . '</option>';
+                }
+                ?>
         </select>
-        <a href="adicionar-autor.php" class="underline hover:font-bold">Cadastrar novo autor</a><br>
         <?php
+         if($_SESSION['user']['permission'] == 2){
+            echo '<a href="gerenciar-autores.php" class="underline hover:font-bold">Gerenciar autores</a><br>';
+        }
+
         if (isset($_SESSION['error']['autor-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['autor-empty'] . '</p>';
         }
         ?>
 
         <label for="editora">Editora:</label>
-        <select name="editora" id="editora" >
+        <select name="editora" id="editora">
             <option selected disabled hidden> Selecione uma editora</option>
-            <option value="HarperCollins">HarperCollins</option>
-            <option value="Campos">Campos</option>
+            <?php
+            $queryEditoras = "SELECT * FROM tab_editoras ORDER BY editora_name";
+            $query = $pdo->prepare($queryEditoras);
+            $query->execute();
+            $editoras = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($editoras as $editora) {
+                echo '<option value="' . $editora['editora_name'] . '">' . $editora['editora_name'] . '</option>';
+            }
+            ?>
         </select>
-        <a href="adicionar-editora.php" class="underline hover:font-bold">Cadastrar nova editora</a><br>
         <?php
+        if($_SESSION['user']['permission'] == 2){
+            echo '<a href="gerenciar-editoras.php" class="underline hover:font-bold">Gerenciar editoras</a><br>';
+        }
+
         if (isset($_SESSION['error']['editora-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['editora-empty'] . '</p>';
         }
         ?>
 
         <label for="ano">Ano de publicação:</label>
-        <input type="number" name="ano" id="ano" >
+        <input type="number" name="ano" id="ano">
         <?php
         if (isset($_SESSION['error']['ano-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['ano-empty'] . '</p>';
@@ -93,7 +115,7 @@ if(!isset($_SESSION['user'])){
         ?>
 
         <label for="paginas">Número de páginas</label>
-        <input type="number" name="paginas" id="paginas" >
+        <input type="number" name="paginas" id="paginas">
         <?php
         if (isset($_SESSION['error']['paginas-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['paginas-empty'] . '</p>';

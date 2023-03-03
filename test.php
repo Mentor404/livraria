@@ -57,21 +57,25 @@ $user = $query->fetch();
 
 echo '<h2>Usuário: '. $user['user_name']. '</h2>';
 
-var_dump($_SESSION['error']);
+var_dump(isset($_SESSION['error']));
+
+foreach ($_SESSION['error'] as $id=>$error) {
+    echo '<p>'.$id.'</p>';
+}
 ?>
 
 <?php
 
 $categorias = ['Ação', 'Ficção'];
+$autor = 'Rodolfo';
 
-foreach ($categorias as $categoria) {
-    $queryCategoriaId = $pdo->prepare("SELECT categoria_id FROM tab_categorias WHERE categoria_name LIKE :categoria");
-    $queryCategoriaId->bindParam(':categoria', $categoria, PDO::PARAM_STR);
-    $queryCategoriaId->execute();
-    $categoriaId = $queryCategoriaId->fetchColumn(0);
+    $queryAutorId = $pdo->prepare("SELECT autor_id FROM tab_autores WHERE autor_name LIKE :autor");
+    $queryAutorId->bindParam(':autor', $autor, PDO::PARAM_STR);
+    $queryAutorId->execute();
+    $autorId = $queryAutorId->fetchColumn(0);
 
-    var_dump($categoriaId);
-    echo $categoriaId;
-}
+    var_dump($autorId);
+    echo $autorId;
+
 ?>
 
