@@ -1,11 +1,18 @@
 <?php
 require 'connect.php';
+$id = $_GET['id'];
 
-if(!isset($_GET['id'])) {
+if(!isset($id)) {
     header('Location: catalogo.php');
 }
 
-$id = $_GET['id'];
+$queryLivro = $pdo->prepare("SELECT * FROM tab_livros WHERE livro_id = :id");
+$queryLivro->bindParam(':id', $id, PDO::PARAM_STR);
+$queryLivro->execute();
+$livro = $queryLivro->rowCount();
+if($livro == 0) {
+    header('Location: catalogo.php');
+}
 ?>
 
 <html lang="pt">
@@ -116,7 +123,12 @@ $id = $_GET['id'];
     <section id="section-l-2">
         <img src="src/resources/background-card-large.png" alt="Fundo" class="bg-l">
         <?php
-        echo '<img src="'.$livro['livro_image'].'" alt="Capa do livro" class="absolute w-[495px] rounded-[10px] h-[757px] ml-[120px]">';
+        if(strlen($livro['livro_image']) > 0) {
+            echo '<img src="'.$livro['livro_image'].'" alt="Capa do livro" class="absolute w-[495px] rounded-[10px] h-[757px] ml-[120px]">';
+
+        } else {
+            echo '<img src="'.$livro['livro_image'].'" alt="Capa do livro" class="absolute w-[495px] rounded-[10px] h-[757px] ml-[120px]">';
+        }
         ?>
     </section>
 </div>

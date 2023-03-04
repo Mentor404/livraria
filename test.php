@@ -65,17 +65,14 @@ foreach ($_SESSION['error'] as $id=>$error) {
 ?>
 
 <?php
-
-$categorias = ['Ação', 'Ficção'];
-$autor = 'Rodolfo';
-
-    $queryAutorId = $pdo->prepare("SELECT autor_id FROM tab_autores WHERE autor_name LIKE :autor");
-    $queryAutorId->bindParam(':autor', $autor, PDO::PARAM_STR);
+$title = 'Teste3';
+    $queryAutorId = $pdo->prepare("SELECT * FROM tab_livros WHERE tab_livros.livro_title LIKE :title");
+    $queryAutorId->bindParam(':title', $title, PDO::PARAM_STR);
     $queryAutorId->execute();
-    $autorId = $queryAutorId->fetchColumn(0);
+    $autorId = $queryAutorId->fetch();
 
     var_dump($autorId);
-    echo $autorId;
+    echo strlen($autorId['livro_image']);
 
 ?>
 

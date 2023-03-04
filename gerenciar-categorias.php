@@ -5,12 +5,42 @@ if (!isset($_SESSION['user']['name'])) {
     header('Location: catalogo.php');
 }
 
-if (isset($_POST['name']) && isset($_SESSION['error'])) {
+if (isset($_SESSION['error']['time']) && time() - $_SESSION['error']['time'] > 5) {
     unset($_SESSION['error']);
 }
 
 if (isset($_SESSION['success']['time']) && time() - $_SESSION['success']['time'] > 5) {
     unset($_SESSION['success']);
+}
+
+/**
+ * @return void
+ */
+function errorMessage(): void
+{
+    if (isset($_SESSION['error'])) {
+        foreach ($_SESSION['error'] as $id => $error) {
+            if ($id != 'time') {
+                echo '<p class="alert alert-danger mt-1">' . $_SESSION['error'][$id] . '</p>';
+            }
+        }
+        header("Refresh:6");
+    }
+}
+
+/**
+ * @return void
+ */
+function successMessage(): void
+{
+    if (isset($_SESSION['success'])) {
+        foreach ($_SESSION['success'] as $id => $success) {
+            if ($id != 'time') {
+                echo '<p class="alert alert-success mt-1">' . $_SESSION['success'][$id] . '</p>';
+            }
+        }
+        header("Refresh:6");
+    }
 }
 
 if (!isset($_GET['edit']) && !isset($_GET['delete']) && !isset($_GET['add'])) {
@@ -47,17 +77,8 @@ if (!isset($_GET['edit']) && !isset($_GET['delete']) && !isset($_GET['add'])) {
         <a href="adicionar.php" class="underline">Voltar</a>
 
         <?php
-        if (isset($_SESSION['success']['add'])) {
-            echo '<p class="alert alert-success mt-1">' . $_SESSION['success']['add'] . '</p>';
-            header("Refresh:6");
-        }
-        if (isset($_SESSION['success']['remove'])) {
-            echo '<p class="alert alert-success mt-1">' . $_SESSION['success']['remove'] . '</p>';
-            header("Refresh:6");
-        }
-        if (isset($_SESSION['error']['ukn'])) {
-            echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['ukn'] . '</p>';
-        }
+        successMessage();
+        errorMessage();
         ?>
     </div>
 
@@ -70,15 +91,7 @@ if (!isset($_GET['edit']) && !isset($_GET['delete']) && !isset($_GET['add'])) {
         echo '<form method="POST" action="">';
         echo '<label for="name">Nome da categoria:</label>';
         echo '<input type="text" name="name" id="name">';
-        if (isset($_SESSION['error']['empty'])) {
-            echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['empty'] . '</p>';
-        }
-        if (isset($_SESSION['error']['blank'])) {
-            echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['blank'] . '</p>';
-        }
-        if (isset($_SESSION['error']['take'])) {
-            echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['take'] . '</p>';
-        }
+        errorMessage();
         echo '<a href="gerenciar-categorias.php" class="underline">Voltar</a>';
         echo ' <input type="submit" value="Confirmar" class="btn-submit border border-neutral-500">';
         echo '</form>';
@@ -99,11 +112,13 @@ if (!isset($_GET['edit']) && !isset($_GET['delete']) && !isset($_GET['add'])) {
                 header("Location: gerenciar-categorias.php");
             } else {
                 $_SESSION['error']['take'] = 'Essa categoria já existe.';
+                $_SESSION['error']['time'] = time();
                 header('Location: gerenciar-categorias.php?add');
             }
         }
         if (isset($_POST['name']) && empty($_POST['name'])) {
             $_SESSION['error']['blank'] = 'Um nome precisa ser informado.';
+            $_SESSION['error']['time'] = time();
             header('Location: gerenciar-categorias.php?add');
         }
     }
@@ -118,6 +133,7 @@ if (!isset($_GET['edit']) && !isset($_GET['delete']) && !isset($_GET['add'])) {
 
         if (empty($_GET['delete']) || $linha == 0) {
             $_SESSION['error']['ukn'] = 'Não encontrei essa categoria.';
+            $_SESSION['error']['time'] = time();
             header('Location: gerenciar-categorias.php');
         } else {
             $queryDelete = $pdo->prepare("DELETE FROM tab_categorias WHERE categoria_id = :delete");
@@ -125,8 +141,8 @@ if (!isset($_GET['edit']) && !isset($_GET['delete']) && !isset($_GET['add'])) {
             $queryDelete->execute();
 
             $_SESSION['success']['remove'] = 'Categoria ' . $categoria['categoria_name'] . ' removida com sucesso.';
-            header('Location: gerenciar-categorias.php');
             $_SESSION['success']['time'] = time();
+            header('Location: gerenciar-categorias.php');
         }
     }
 
@@ -147,12 +163,7 @@ if (!isset($_GET['edit']) && !isset($_GET['delete']) && !isset($_GET['add'])) {
             echo '<form method="POST" action="">';
             echo '<label for="name-e">Nome da categoria:</label>';
             echo '<input type="text" name="name-e" id="name-e" value="' . $categoria['categoria_name'] . '">';
-            if (isset($_SESSION['error']['empty'])) {
-                echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['empty'] . '</p>';
-            }
-            if (isset($_SESSION['error']['already'])) {
-                echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['already'] . '</p>';
-            }
+            errorMessage();
             echo '<a href="gerenciar-categorias.php" class="underline">Voltar</a>';
             echo ' <input type="submit" value="Confirmar" class="btn-submit border border-neutral-500">';
             echo '</form>';
@@ -166,6 +177,7 @@ if (!isset($_GET['edit']) && !isset($_GET['delete']) && !isset($_GET['add'])) {
                 foreach ($verifys as $verify) {
                     if ($verify['categoria_name'] == $_POST['name-e']) {
                         $_SESSION['error']['already'] = 'Essa categoria já está cadastrada.';
+                        $_SESSION['error']['time'] = time();
                         header('Location: gerenciar-categorias.php?edit=' . $_GET['edit']);
                     }
                 }
@@ -179,6 +191,7 @@ if (!isset($_GET['edit']) && !isset($_GET['delete']) && !isset($_GET['add'])) {
 
             if (isset($_POST['name-e']) && empty($_POST['name-e'])) {
                 $_SESSION['error']['empty'] = 'O nome não pode ser vazio.';
+                $_SESSION['error']['time'] = time();
                 header('Location: gerenciar-categorias.php?edit=' . $_GET['edit']);
             }
         }

@@ -12,6 +12,7 @@ if (!isset($_SESSION['user'])) {
         <label for="livro-title">Título:</label>
         <input type="text" class="" id="livro-title" name="livro-title">
         <?php
+
         if (isset($_SESSION['error']['title-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['title-empty'] . '</p>';
         }
