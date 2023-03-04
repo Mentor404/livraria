@@ -13,7 +13,7 @@ a criação de layouts. O site foi solicitado pela disciplina de Programação p
 ## Funcionalidades
 
 - Cadastro / Login
-- Adicionar e gerenciar
+- Adicionar e gerenciar (usuário deve estar logado e ter permissão 2)
     - Livro
     - Autor | _1:N devido ao select_
     - Categoria | _N:N_
