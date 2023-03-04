@@ -2,14 +2,6 @@
 session_start();
 require 'connect.php';
 
-if (isset($_SESSION['error'])) {
-    unset($_SESSION['error']);
-}
-if (isset($_SESSION['sucess'])) {
-    unset($_SESSION['sucess']);
-}
-
-
 $titulo = filter_input(INPUT_POST, 'livro-title', FILTER_SANITIZE_SPECIAL_CHARS);
 $descricao = filter_input(INPUT_POST, 'livro-description', FILTER_SANITIZE_SPECIAL_CHARS);
 $categorias = $_POST['livro-categoria']; //array
@@ -21,30 +13,37 @@ $image = filter_input(INPUT_POST, 'image', FILTER_SANITIZE_URL);
 
 if (empty($titulo)) {
     $_SESSION['error']['title-empty'] = 'Título não pode ser vazio';
+    $_SESSION['error']['time'] = time();
     header("Location: adicionar.php");
 }
 if (empty($descricao)) {
     $_SESSION['error']['description-empty'] = 'Descrição não pode ser vazia';
+    $_SESSION['error']['time'] = time();
     header("Location: adicionar.php");
 }
 if (empty($categorias)) {
     $_SESSION['error']['category-empty'] = 'O livro precisa ter pelo menos uma categoria';
+    $_SESSION['error']['time'] = time();
     header("Location: adicionar.php");
 }
 if (empty($autor)) {
     $_SESSION['error']['autor-empty'] = 'O autor precisa ser selecionado';
+    $_SESSION['error']['time'] = time();
     header("Location: adicionar.php");
 }
 if (empty($editora)) {
     $_SESSION['error']['editora-empty'] = 'A editora precisa ser selecionada';
+    $_SESSION['error']['time'] = time();
     header("Location: adicionar.php");
 }
 if (empty($ano)) {
     $_SESSION['error']['ano-empty'] = 'O ano não pode ser vazio';
+    $_SESSION['error']['time'] = time();
     header("Location: adicionar.php");
 }
 if (empty($paginas)) {
     $_SESSION['error']['paginas-empty'] = 'O campo de páginas precisa ser preenchido';
+    $_SESSION['error']['time'] = time();
     header("Location: adicionar.php");
 }
 
@@ -55,6 +54,7 @@ $query->execute();
 
 if ($query->rowCount() != 0) {
     $_SESSION['error']['livro-already-take'] = "Este livro já foi cadastrado";
+    $_SESSION['error']['time'] = time();
     header("Location: adicionar.php");
 }
 
@@ -97,6 +97,7 @@ if (!empty($titulo) && !empty($descricao) && !empty($categorias) && !empty($auto
     $queryLivrosUsuarios->execute([$livroId, $_SESSION['user']['id']]);
 
     $_SESSION['sucess']['adicionar'] = 'Livro adicionado com sucesso';
+    $_SESSION['sucess']['time'] = time();
     header("Location: adicionar.php");
 } else {
     header("Location: adicionar.php");

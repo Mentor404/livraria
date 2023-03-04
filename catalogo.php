@@ -34,10 +34,13 @@ require 'header.php';
             </select>
         </div>
 
-        <button type="submit" class="w-[100px] h-[30px] rounded-[10px] mt-[29px] bg-light-yellow">Buscar</button>
+        <button type="submit" class="w-[100px] h-[30px] rounded-[10px] mt-[29px] text-center bg-light-yellow">Buscar</button>
         <?php
         if (isset($_SESSION['user'])) {
-            echo '<a href="adicionar.php" class="ml-5 px-4 h-[30px] rounded-[10px] mt-[29px] bg-light-green text-white">Adicionar novo livro</a>';
+            echo '<a href="adicionar.php" class="ml-5 px-4 h-[30px] rounded-[10px] mt-[29px] bg-light-green text-center text-white">Adicionar novo livro</a>';
+            if($_SESSION['user']['permission'] == 2) {
+                echo '<a href="gerenciar-livros.php" class="ml-5 px-4 h-[30px] rounded-[10px] mt-[29px] bg-dark-green text-center text-white">Gerenciar livros</a>';
+            }
         }
         ?>
     </form>
@@ -53,7 +56,11 @@ require 'header.php';
 
         foreach ($livros as $livro) {
             echo '<a class="catalogo-card" href="livro.php?id=' . $livro['livro_id'] . '">';
-            echo '<div class="cover" style="background-image:url(' . $livro['livro_image'] . ')"></div>';
+            if(strlen($livro['livro_image']) > 0) {
+                echo '<div class="cover" style="background-image:url(' . $livro['livro_image'] . ')"></div>';
+            } else {
+                echo '<div class="cover" style="background-image:url(src/resources/image-blank.png)"></div>';
+            }
             echo '<h2 class="card-title">' . $livro['livro_title'] . '</h2>';
             echo '<p class="card-content">' . $livro['livro_description'] . '</p>';
             echo '</a>';

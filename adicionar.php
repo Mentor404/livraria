@@ -5,6 +5,13 @@ if (!isset($_SESSION['user'])) {
     header("Location: index.php");
 }
 
+if (isset($_SESSION['error']['time']) && time() - $_SESSION['error']['time'] > 5) {
+    unset($_SESSION['error']);
+}
+
+if (isset($_SESSION['success']['time']) && time() - $_SESSION['success']['time'] > 5) {
+    unset($_SESSION['success']);
+}
 ?>
 
 <div class="adicionarWrapper">
@@ -15,12 +22,15 @@ if (!isset($_SESSION['user'])) {
 
         if (isset($_SESSION['error']['title-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['title-empty'] . '</p>';
+            header("Refresh:6");
         }
         if (isset($_SESSION['error']['livro-already-take'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['livro-already-take'] . '</p>';
+            header("Refresh:6");
         }
         if (isset($_SESSION['sucess']['adicionar'])) {
             echo '<p class="alert alert-success mt-1">' . $_SESSION['sucess']['adicionar'] . '</p>';
+            header("Refresh:6");
         }
         ?>
 
@@ -30,6 +40,7 @@ if (!isset($_SESSION['user'])) {
         if (isset($_SESSION['error']['description-empty'])) {
             if (empty($descricao)) {
                 echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['description-empty'] . '</p>';
+                header("Refresh:6");
             }
         }
         ?>
@@ -56,6 +67,7 @@ if (!isset($_SESSION['user'])) {
         }
         if (isset($_SESSION['error']['category-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['category-empty'] . '</p>';
+            header("Refresh:6");
         }
         ?>
 
@@ -80,6 +92,7 @@ if (!isset($_SESSION['user'])) {
 
         if (isset($_SESSION['error']['autor-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['autor-empty'] . '</p>';
+            header("Refresh:6");
         }
         ?>
 
@@ -104,6 +117,7 @@ if (!isset($_SESSION['user'])) {
 
         if (isset($_SESSION['error']['editora-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['editora-empty'] . '</p>';
+            header("Refresh:6");
         }
         ?>
 
@@ -112,6 +126,7 @@ if (!isset($_SESSION['user'])) {
         <?php
         if (isset($_SESSION['error']['ano-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['ano-empty'] . '</p>';
+            header("Refresh:6");
         }
         ?>
 
@@ -120,6 +135,7 @@ if (!isset($_SESSION['user'])) {
         <?php
         if (isset($_SESSION['error']['paginas-empty'])) {
             echo '<p class="alert alert-danger mt-1">' . $_SESSION['error']['paginas-empty'] . '</p>';
+            header("Refresh:6");
         }
         ?>
 

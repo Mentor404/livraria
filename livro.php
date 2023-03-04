@@ -127,7 +127,7 @@ if($livro == 0) {
             echo '<img src="'.$livro['livro_image'].'" alt="Capa do livro" class="absolute w-[495px] rounded-[10px] h-[757px] ml-[120px]">';
 
         } else {
-            echo '<img src="'.$livro['livro_image'].'" alt="Capa do livro" class="absolute w-[495px] rounded-[10px] h-[757px] ml-[120px]">';
+            echo '<img src="src/resources/image-blank.png" alt="Capa do livro" class="absolute w-[495px] rounded-[10px] h-[757px] ml-[120px]">';
         }
         ?>
     </section>

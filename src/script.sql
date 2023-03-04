@@ -46,14 +46,12 @@ create table tab_livros_autores
     constraint livro_autor_id
         unique (livro_autor_id),
     constraint tab_livros_autores_ibfk_1
-        foreign key (fk_livro_id) references tab_livros (livro_id),
+        foreign key (fk_livro_id) references tab_livros (livro_id)
+            on delete cascade,
     constraint tab_livros_autores_ibfk_2
         foreign key (fk_autor_id) references tab_autores (autor_id)
             on delete cascade
 );
-
-create index fk_livro_id
-    on tab_livros_autores (fk_livro_id);
 
 create table tab_livros_categorias
 (
@@ -64,14 +62,12 @@ create table tab_livros_categorias
     constraint livro_categoria_id
         unique (livro_categoria_id),
     constraint tab_livros_categorias_ibfk_1
-        foreign key (fk_livro_id) references tab_livros (livro_id),
+        foreign key (fk_livro_id) references tab_livros (livro_id)
+            on delete cascade,
     constraint tab_livros_categorias_ibfk_2
         foreign key (fk_categoria_id) references tab_categorias (categoria_id)
             on delete cascade
 );
-
-create index fk_livro_id
-    on tab_livros_categorias (fk_livro_id);
 
 create table tab_livros_editoras
 (
@@ -81,16 +77,12 @@ create table tab_livros_editoras
     constraint livro_autor_id
         unique (livro_autor_id),
     constraint tab_livros_editoras_ibfk_1
-        foreign key (fk_livro_id) references tab_livros (livro_id),
+        foreign key (fk_livro_id) references tab_livros (livro_id)
+            on delete cascade,
     constraint tab_livros_editoras_ibfk_2
         foreign key (fk_editora_id) references tab_editoras (editora_id)
+            on delete cascade
 );
-
-create index fk_editora_id
-    on tab_livros_editoras (fk_editora_id);
-
-create index fk_livro_id
-    on tab_livros_editoras (fk_livro_id);
 
 create table tab_usuarios
 (
@@ -113,15 +105,9 @@ create table tab_livros_usuarios
     constraint livro_user_id
         unique (livro_user_id),
     constraint tab_livros_usuarios_ibfk_1
-        foreign key (fk_livro_id) references tab_livros (livro_id),
+        foreign key (fk_livro_id) references tab_livros (livro_id)
+            on delete cascade,
     constraint tab_livros_usuarios_ibfk_2
         foreign key (fk_user_id) references tab_usuarios (user_id)
+            on delete cascade
 );
-
-create index fk_livro_id
-    on tab_livros_usuarios (fk_livro_id);
-
-create index fk_user_id
-    on tab_livros_usuarios (fk_user_id);
-
-
