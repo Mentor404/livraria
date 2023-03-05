@@ -11,6 +11,19 @@ $ano = filter_input(INPUT_POST, 'ano', FILTER_SANITIZE_NUMBER_INT);
 $paginas = filter_input(INPUT_POST, 'paginas', FILTER_SANITIZE_NUMBER_INT);
 $image = filter_input(INPUT_POST, 'image', FILTER_SANITIZE_URL);
 
+$temp = array(
+    "titulo" => $titulo,
+    "descricao" => $descricao,
+    "categorias" => $categorias,
+    "autor" => $autor,
+    "editora" => $editora,
+    "ano" => $ano,
+    "paginas" => $paginas,
+    "image" => $image
+);
+setcookie('addForm-temp', json_encode($temp), time() + 1800);
+
+
 if (empty($titulo)) {
     $_SESSION['error']['title-empty'] = 'Título não pode ser vazio';
     $_SESSION['error']['time'] = time();
@@ -96,8 +109,9 @@ if (!empty($titulo) && !empty($descricao) && !empty($categorias) && !empty($auto
     $queryLivrosUsuarios = $pdo->prepare("INSERT INTO tab_livros_usuarios (fk_livro_id, fk_user_id) VALUES (?,?) ");
     $queryLivrosUsuarios->execute([$livroId, $_SESSION['user']['id']]);
 
-    $_SESSION['sucess']['adicionar'] = 'Livro adicionado com sucesso';
-    $_SESSION['sucess']['time'] = time();
+    $_SESSION['success']['adicionar'] = 'Livro adicionado com sucesso';
+    setcookie('addForm-temp', '', time() - 1800);
+    $_SESSION['success']['time'] = time();
     header("Location: adicionar.php");
 } else {
     header("Location: adicionar.php");

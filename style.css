@@ -1399,6 +1399,11 @@ nav ul li > *:hover {
   border-color: rgb(115 115 115 / var(--tw-border-opacity));
 }
 
+.bg-dark-green {
+  --tw-bg-opacity: 1;
+  background-color: rgb(46 99 71 / var(--tw-bg-opacity));
+}
+
 .bg-g-gray {
   --tw-bg-opacity: 1;
   background-color: rgb(234 235 236 / var(--tw-bg-opacity));
@@ -1427,16 +1432,6 @@ nav ul li > *:hover {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-yellow-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(254 249 195 / var(--tw-bg-opacity));
-}
-
-.bg-dark-green {
-  --tw-bg-opacity: 1;
-  background-color: rgb(46 99 71 / var(--tw-bg-opacity));
 }
 
 .p-1 {
