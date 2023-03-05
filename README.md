@@ -14,7 +14,7 @@ a criação de layouts. O site foi solicitado pela disciplina de Programação p
 
 - Cadastro / Login
 - Adicionar e gerenciar (usuário deve estar logado e ter permissão 2)
-    - Livro
+    - Livro | _Informações ficam salvas por até 30 min caso seja dado refresh antes de enviar o formulário_
     - Autor | _1:N devido ao select_
     - Categoria | _N:N_
     - Editora | _1:N devido ao select_
